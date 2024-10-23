@@ -6,10 +6,15 @@ sudo apt -y update
 sudo apt install -y intel-oneapi-mkl
 export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2024.2/lib/
 wget https://swash.sourceforge.io/download/zip/SWASH-10.05-Linux.tar.gz
+wget https://swanmodel.sourceforge.io/download/zip/SWAN-41.51-Linux.tar.gz
 tar xzvf SWASH-10.05-Linux.tar.gz 
+tar xzvf SWAN-41.51-Linux.tar.gz
 wget https://swash.sourceforge.io/download/zip/testcases.tar.gz
 tar xzvf testcases.tar.gz 
+wget https://swanmodel.sourceforge.io/download/zip/refrac.tar.gz
+tar xzvf refrac.tar.gz
+
 ROOT=`pwd`
-export PATH=$ROOT/SWASH-10.05-Linux/bin:$PATH
+export PATH=$ROOT/SWASH-10.05-Linux/bin:$ROOT/SWAN-41.51-Linux/bin:$PATH
 cd testcases/a11stwav
 swashrun -input a11stw01
