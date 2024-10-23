@@ -18,3 +18,5 @@ ROOT=`pwd`
 export PATH=$ROOT/SWASH-10.05-Linux/bin:$ROOT/SWAN-41.51-Linux/bin:$PATH
 cd testcases/a11stwav
 swashrun -input a11stw01
+cd /refrac
+swanrun -input a11refr
