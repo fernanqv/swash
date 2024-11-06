@@ -4,7 +4,7 @@ wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCT
 echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
 sudo apt -y update
 sudo apt install -y intel-oneapi-mkl
-export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2024.2/lib/
+export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2025.0/lib/
 wget https://swash.sourceforge.io/download/zip/SWASH-10.05-Linux.tar.gz
 wget https://swanmodel.sourceforge.io/download/zip/SWAN-41.51-Linux.tar.gz
 tar xzvf SWASH-10.05-Linux.tar.gz 
@@ -20,3 +20,6 @@ cd testcases/a11stwav
 swashrun -input a11stw01
 cd /refrac
 swanrun -input a11refr
+
+echo 'export PATH=/SWASH-10.05-Linux/bin:SWAN-41.51-Linux/bin:$PATH' >> $HOME/.bashrc
+echo 'export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2025.0/lib/' >> $HOME/.bashrc

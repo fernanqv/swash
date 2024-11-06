@@ -1,0 +1,10 @@
+# 
+.DS_Store
+codes/.DS_Store
+demos/.DS_Store
+codes/__pycache__/
+codes/datamining/.ipynb_checkpoints/
+demos/datamining/.ipynb_checkpoints/
+.ipynb_checkpoints/
+codes/*/__pycache__/
+
