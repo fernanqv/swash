@@ -9,5 +9,6 @@ dependencies:
   - plotly
   - scipy
   - scikit-learn
-  #- xarray
-  #- netcdf4
+  - xarray
+  - netcdf4
+  - ipykernel
