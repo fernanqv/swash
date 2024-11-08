@@ -66,7 +66,7 @@ sm = wrap_swash.wswash.plots.SwashPlot(sp)
 # Set the simulation period and grid resolution
 sp.tendc = 1800                          # simulation period (SEC)
 sp.Cf = 0.01                       # manning frictional coefficient  (m^-1/3 s)
-sp.vert = 1                # vertical layers
+sp.vert = 3                # vertical layers
 
 
 #sp.height = 1.148260794155014                       # plant height per vertical segment (m)
