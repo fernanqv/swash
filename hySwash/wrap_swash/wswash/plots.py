@@ -274,7 +274,7 @@ class SwashPlot(object):
 
             # waves
             Y = out.isel(Tsec=frame)['Watlev'].values
-            ax.fill_between(range(len(Y)), y_depth_min, Y, fc='deepskyblue', alpha=0.5, zorder=1)
+            # ax.fill_between(range(len(Y)), y_depth_min, Y, fc='deepskyblue', alpha=0.5, zorder=1)
 
             ax.set_title('Time : {0} s'.format(frame), fontsize=plot_params['fontsize'])
             return []

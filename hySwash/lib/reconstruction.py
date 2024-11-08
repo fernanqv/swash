@@ -8,8 +8,8 @@ import sys
 # addpath to bluemath modules
 sys.path.insert(0, op.join(os.getcwd(), '..', '..'))
 
-from statistical_toolkit.bluemathtk.RBF import *
-from statistical_toolkit.bluemathtk.PCA import *
+from .RBF import *
+from .PCA import *
 
 
 def RBF_Reconstruction_singular(
