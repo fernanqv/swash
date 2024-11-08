@@ -172,24 +172,25 @@ class SwashPlot(object):
             )
             do_legend = True
 
-        # vegetation
-        if self.proj.vegetation != None:
+# NO FUNCIONA!!!!
+        # # vegetation
+        # if self.proj.vegetation != None:
 
-            np_ini = self.proj.np_ini
-            np_fin = self.proj.np_fin
+        #     np_ini = self.proj.np_ini
+        #     np_fin = self.proj.np_fin
 
-            pos = [(x >= np_ini) & (x <= np_fin)][0]
+        #     pos = [(x >= np_ini) & (x <= np_fin)][0]
 
-            # plot
-            ax.fill_between(
-                x[pos], -depth[pos]-np.abs(depth[0]/30), -depth[pos], 
-                facecolor = 'green',
-                alpha = 0.5,
-                edgecolor = 'green',
-                zorder = 3,
-                label = 'Vegetation',
-            )
-            do_legend = True
+        #     # plot
+        #     ax.fill_between(
+        #         x[pos], -depth[pos]-np.abs(depth[0]/30), -depth[pos], 
+        #         facecolor = 'green',
+        #         alpha = 0.5,
+        #         edgecolor = 'green',
+        #         zorder = 3,
+        #         label = 'Vegetation',
+        #     )
+        #     do_legend = True
 
             # TODO: repasar este plot, muy costoso computacionalmente
             #np_ini = self.proj.np_ini

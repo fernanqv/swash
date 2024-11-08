@@ -272,8 +272,7 @@ class SwashWrap(object):
 
         else:
             # LINUX/MAC - ln input file and run swan case
-            cmd = 'cd {0} && ln -sf input.sws INPUT && {1} INPUT'.format(
-                p_run, self.bin)
+            cmd = 'cd {0} && swashrun -input input.sws'.format(p_run)
 
             # redirect SWASH output
             cmd += ' 2>&1 > wswash_exec.log'
