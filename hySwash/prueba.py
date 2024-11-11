@@ -75,7 +75,7 @@ sp.vert = 3                # vertical layers
 sp.warmup = 0.15 * sp.tendc              # spin-up time (s) (default 15%)
 sp.deltat = 1              # delta time over which the wave series is defined
 sp.b_grid.dx = 1            # bathymetry mesh resolution at x axes (m)
-sp.dxL = 40                 # nº nodes per wavelength
+sp.dxL = 20                 # nº nodes per wavelength
 sp.dxinp = 1                # bathymetry spacing resolution (m)
 sp.dyinp = 1
 

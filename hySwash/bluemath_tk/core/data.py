@@ -1,196 +1,143 @@
-import numpy as np
-
-# scatter_data
-import bluemath_tk.colors
-from matplotlib.colors import ListedColormap
-import matplotlib.pyplot as plt
-import itertools
+import logging
+from typing import Tuple
+import pandas as pd
 
 
-def normalize(data, ix_directional, scale_factor={}):
+def normalize(
+    data: pd.DataFrame, custom_scale_factor: dict = {}, logger: logging.Logger = None
+) -> Tuple[pd.DataFrame, dict]:
     """
-    Normalize data subset - norm = (val - min) / (max - min)
+    Normalize data to 0-1 using min max scaler approach
 
-    Returns:
-    - data_norm: Normalized data
-    """
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Input data to be normalized.
+    custom_scale_factor : dict, optional
+        Dictionary with variables as keys and a list with two values as
+        values. The first value is the minimum and the second value is the
+        maximum used to normalize the variable. If not provided, the
+        minimum and maximum values of the variable are used.
+    logger : logging.Logger, optional
+        Logger object to log warnings if the custom min or max is bigger or
+        lower than the datapoints.
 
-    # Initialize data.
-    # data_norm = data (it is a pointer an modify the original data)
-    data_norm = data.copy()
+    Returns
+    -------
+    normalized_data : pd.DataFrame
+        Normalized data.
 
-    # Normalize scalar data
-    for ix in data.columns:
-        if ix in ix_directional:
-            print(data[ix])
-            data_norm[ix] = (data[ix] * np.pi / 180.0) / np.pi
-        else:
-            v = data[ix]
-            if ix not in scale_factor:
-                mi = np.amin(v)
-                ma = np.amax(v)
-                scale_factor[ix] = [mi, ma]
+    scale_factor : dict
+        Dictionary with variables as keys and a list with two values as
+        values. The first value is the minimum and the second value is the
+        maximum used to normalize the variable.
 
-            data_norm[ix] = (v - scale_factor[ix][0]) / (
-                scale_factor[ix][1] - scale_factor[ix][0]
-            )
+    Notes
+    -----
+    - This method does not modify the input data, it creates a copy of the
+      dataframe and normalizes it.
+    - The normalization is done variable by variable, i.e. the minimum and
+      maximum values are calculated for each variable.
+    - If custom min or max is bigger or lower than the datapoints, it will
+      be changed to the minimum or maximum of the datapoints and a warning
+      will be logged.
 
-    return data_norm, scale_factor
-
-
-def denormalize(data_norm, ix_directional, scale_factor):
-    """
-    DeNormalize data
-
-    Returns:
-    - data: De-normalized data
-    """
-
-    # Initialize data
-    data = data_norm.copy()
-
-    # Scalar data
-    for ix in data.columns:
-        if ix in ix_directional:
-            data[ix] = data_norm[ix] * 180
-        else:
-            data[ix] = (
-                data_norm[ix] * (scale_factor[ix][1] - scale_factor[ix][0])
-                + scale_factor[ix][0]
-            )
-
-    return data
-
-
-def scatter(data, centroids=None, color_data=None, custom_params=None):
-    """
-    Create scatter plots for all combinations of variables in the data.
-
-    Arguments
-    ---------
-    data: pandas DataFrame
-        Data to be plotted.
-
-    centroids: pandas DataFrame
-        Centroids to be plotted.
-
-    color_data: array
-        Array of values to color the data points.
-
-    custom_params: dict
-        Custom parameters for scatter plots.
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from bluemath_tk.core.data import normalize
+    >>> df = pd.DataFrame(
+    ...     {
+    ...         "Hs": np.random.rand(1000) * 7,
+    ...         "Tp": np.random.rand(1000) * 20,
+    ...         "Dir": np.random.rand(1000) * 360,
+    ...     }
+    ... )
+    >>> normalized_data, scale_factor = normalize(data=data)
     """
 
-    scatter_params = (
-        {**bluemath_tk.colors.scatter_defaults, **custom_params}
-        if custom_params
-        else bluemath_tk.colors.scatter_defaults
-    )
-
-    # Create figure and axes
-    num_variables = data.shape[1]
-    fig, axes = plt.subplots(
-        nrows=num_variables - 1,
-        ncols=num_variables - 1,
-        figsize=scatter_params["figsize"],
-    )
-
-    # Create scatter plots
-    combinations = list(itertools.combinations(data.columns, 2))
-
-    i = 0
-    j = num_variables - 2
-
-    for combination in combinations:
-
-        # If number of variables is greater than 2, create subplots
-        if num_variables > 2:
-            ax = axes[i, j]
-        else:
-            ax = axes
-
-        if color_data is not None:
-            # Define a continuous colormap using the 'rainbow' colormap from Matplotlib
-            cmap_continuous = plt.cm.rainbow
-            # Create a discretized colormap by sampling the continuous colormap at evenly spaced intervals
-            # The number of intervals is determined by the number of unique values in 'bmus'
-            cmap_discretized = ListedColormap(
-                cmap_continuous(np.linspace(0, 1, len(np.unique(color_data))))
-            )
-
-            # Plot scatter data
-            im = ax.scatter(
-                data[combination[0]],
-                data[combination[1]],
-                c=color_data,
-                s=scatter_params["size_data"],
-                label="data",
-                cmap=cmap_discretized,
-                alpha=scatter_params["alpha_subset"],
-            )
-            plt.colorbar(im, ticks=np.arange(0, len(np.unique(color_data))))
-
-        else:
-            ax.scatter(
-                data[combination[0]],
-                data[combination[1]],
-                s=scatter_params["size_data"],
-                c=scatter_params["color_data"],
-                alpha=scatter_params["alpha_data"],
-                label="Data",
-            )
-
-        if centroids is not None:
-            if color_data is not None:
-                # Add centroids to the plot
-                ax.scatter(
-                    centroids[combination[0]],
-                    centroids[combination[1]],
-                    s=scatter_params["size_centroid"],
-                    c=np.array(range(len(np.unique(color_data)))) + 1,
-                    cmap=cmap_discretized,
-                    ec="k",
-                    label="Centroids",
-                )
+    normalized_data = data.copy()  # Copy pd.DataFrame to avoid bad memory replacements
+    scale_factor = (
+        custom_scale_factor.copy()
+    )  # Copy dict to avoid bad memory replacements
+    for data_var in normalized_data.columns:
+        data_var_min = normalized_data[data_var].min()
+        data_var_max = normalized_data[data_var].max()
+        if custom_scale_factor.get(data_var):
+            if custom_scale_factor.get(data_var)[0] > data_var_min:
+                if logger is not None:
+                    logger.warning(
+                        f"Proposed min custom scaler for {data_var} is bigger than datapoint, using smallest datapoint"
+                    )
+                scale_factor[data_var][0] = data_var_min
             else:
-                ax.scatter(
-                    centroids[combination[0]],
-                    centroids[combination[1]],
-                    s=scatter_params["size_centroid"],
-                    c=scatter_params["color_data"],
-                    ec="k",
-                    label="Centroids",
-                )
-
-        ax.set_xlabel(combination[0], fontsize=scatter_params["fontsize"])
-        ax.set_ylabel(combination[1], fontsize=scatter_params["fontsize"])
-        ax.legend(fontsize=scatter_params["size_data"])
-        ax.tick_params(axis="both", labelsize=scatter_params["fontsize"])
-
-        # Update i and j for subplots
-        if j > i:
-            j = j - 1
+                data_var_min = custom_scale_factor.get(data_var)[0]
+            if custom_scale_factor.get(data_var)[1] < data_var_max:
+                if logger is not None:
+                    logger.warning(
+                        f"Proposed max custom scaler for {data_var} is lower than datapoint, using biggest datapoint"
+                    )
+                scale_factor[data_var][1] = data_var_max
+            else:
+                data_var_max = custom_scale_factor.get(data_var)[1]
         else:
-            # Remove axis for empty subplots
-            if j > 0:
-                for empty in range(0, j):
-                    ax = axes[i, empty]
-                    ax.axis("off")
-                    ax.get_xaxis().set_visible(False)
-                    ax.get_yaxis().set_visible(False)
-
-            i += 1
-            j = num_variables - 2
-
-    plt.tight_layout()
-    plt.show()
+            scale_factor[data_var] = [data_var_min, data_var_max]
+        normalized_data[data_var] = (normalized_data[data_var] - data_var_min) / (
+            data_var_max - data_var_min
+        )
+    return normalized_data, scale_factor
 
 
-# def scatter_subset(self, norm=False, custom_params=None):
+def denormalize(normalized_data: pd.DataFrame, scale_factor: dict) -> pd.DataFrame:
+    """
+    Denormalize data using provided scale_factor.
 
-#     self.scatter_data(
-#         norm=norm,
-#         plot_centroids=True,
-#         custom_params=custom_params,
-#     )
-#     plt.show()
+    Parameters
+    ----------
+    normalized_data : pd.DataFrame
+        Input data that has been normalized and needs to be denormalized.
+    scale_factor : dict
+        Dictionary with variables as keys and a list with two values as
+        values. The first value is the minimum and the second value is the
+        maximum used to denormalize the variable.
+
+    Returns
+    -------
+    pd.DataFrame
+        Denormalized data.
+
+    Notes
+    -----
+    - This method does not modify the input data, it creates a copy of the
+      dataframe and denormalizes it.
+    - The denormalization is done variable by variable, i.e. the minimum and
+      maximum values are used to scale the data back to its original range.
+    - Assumes that the scale_factor dictionary contains appropriate min and
+      max values for each variable in the normalized_data.
+
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from bluemath_tk.core.data import denormalize
+    >>> df = pd.DataFrame(
+    ...     {
+    ...         "Hs": np.random.rand(1000),
+    ...         "Tp": np.random.rand(1000),
+    ...         "Dir": np.random.rand(1000),
+    ...     }
+    ... )
+    >>> scale_factor = {
+    ...     "Hs": [0, 7],
+    ...     "Tp": [0, 20],
+    ...     "Dir": [0, 360],
+    ... }
+    >>> denormalized_data = denormalize(normalized_data=df, scale_factor=scale_factor)
+    """
+
+    data = normalized_data.copy()  # Copy pd.DataFrame to avoid bad memory replacements
+    for data_var in data.columns:
+        data[data_var] = (
+            data[data_var] * (scale_factor[data_var][1] - scale_factor[data_var][0])
+            + scale_factor[data_var][0]
+        )
+    return data
