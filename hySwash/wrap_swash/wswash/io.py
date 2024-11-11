@@ -62,7 +62,7 @@ class SwashIO(object):
         case_id  - SWASH case index (int)
         swash_input - SWASH input object
         '''
-        print("hola")
+
         # SWASH case path
         p_case = op.join(self.proj.p_cases, case_id)
 
@@ -174,8 +174,8 @@ class SwashIO(object):
         # vegetation
         vegetation = self.proj.vegetation
         vegetation_file = self.proj.vegetation_file
+        # height = self.proj.height
         height = swash_input.height
-        #height = self.proj.height
         diamtr = self.proj.diamtr
         nstems = self.proj.nstems
         drag = self.proj.drag
@@ -281,7 +281,7 @@ class SwashIO(object):
 
         if non_hydrostatic:
             t += "$Numerics\n"
-            t += 'NONHYDrostatic\n$\n'
+            t += 'NONHYDrostatic BOX 1. PREConditioner ILU\n$\n'
 
         if not wind:
             t += "$Output quantities\n"

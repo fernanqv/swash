@@ -98,11 +98,13 @@ class SwashInput(object):
 class SwashProject(object):
     'SWASH numerical model project parameters. used inside swashwrap and swashio'
 
-    def __init__(self, p_proj, n_proj):
+    def __init__(self, p_proj, n_proj, extra_parameters={}):
         '''
         SWASH project information will be stored here
 
         http://swash.sourceforge.net/download/zip/swashuse.pdf
+
+        extra_parameters - dictionary with extra parameters
         '''
 
         # project name and paths
@@ -112,36 +114,50 @@ class SwashProject(object):
 
         # input friction
         self.friction_bottom = None              # bool: activate friction (entire  bottom)
-        self.cf = None                           # friction manning coefficient (m^-1/3 s)
+        self.friction = extra_parameters.get("friction", True)  # bool: activate friction
+        self.cf = extra_parameters.get("cf", 0.01)  # friction manning coefficient (m^-1/3 s)
         self.friction_file = None                # bool: use a friction file
         self.cf_ini = None                       # friction start cell
         self.cf_fin = None                       # friction end cell
 
         # vegetation
-        self.vegetation = None                   # bool: activate vegetation
+        self.vegetation = extra_parameters.get("vegetation", 1)  # bool: activate vegetation
         self.height = None                       # plant height per vertical segment (m)
-        self.diamtr = None                       # plant diameter per vertical segment (m)
-        self.nstems = None                       # num of plants per square meter for each segment
-        self.drag = None                         # drag coefficient per vertical segment
-        self.vegetation_file = None              # bool: use a vegetation file
-        self.np_ini = None                       # vegetation start cell
-        self.np_fin = None                       # vegetation end cell
-
-        # computational grid parameters
-        self.dxL = None                          # nº of nodes per wavelength
+        self.diamtr = extra_parameters.get("diamtr", 0.5009019570650376)  # plant diameter per vertical segment (m)
+        self.nstems = extra_parameters.get("nstems", 1)  # num of plants per square meter for each segment
+        self.drag = extra_parameters.get("drag", 1.0)  # drag coefficient per vertical segment
+        self.vegetation_file = extra_parameters.get("vegetation_file", True)  # bool: use a vegetation file
+        self.np_ini = extra_parameters.get("np_ini", 800)  # vegetation start cell
+        self.np_fin = extra_parameters.get("np_fin", 1000) # vegetation end cell                    
 
         # bathymetry grid and depth
         self.b_grid = SwashGrid()                # bathymetry grid
-        self.depth = None                        # bathymetry deph values (1D numpy.array)
+        self.b_grid.dx = extra_parameters.get("dx", 1)
+        self.dxinp = extra_parameters.get("dxinp", 1)
+        self.dyinp = extra_parameters.get("dyinp", 1)
+        if extra_parameters.get("depth"):
+            self.set_depth(
+                np.loadtxt(extra_parameters.get("depth")), self.dxinp, self.dyinp
+            )  # bathymetry deph values (1D numpy.array)
+        else:
+            print("[WARNING] Depth is not set and must be set before building cases")
+        self.dxL = extra_parameters.get("dxL", 40)  # nº of nodes per wavelength
 
         # input.swn file parameters
-        self.vert = None                         # multilayered mode 
-        self.non_hydrostatic = False             # non hydrostatic pressure
+        self.vert = extra_parameters.get("vert", None)  # multilayered mode 
+        self.non_hydrostatic = extra_parameters.get("non_hydrostatic", True)  # non hydrostatic pressure
 
         # output default configuration
         self.tbegtbl = 0                         # initial time in fields output
         self.delttbl = 1                         # time interval between fields
         self.delttbl_ = 'SEC'                    # time units
+
+        # Set extra parameters
+        self.tendc = extra_parameters.get("tendc", 1800)
+        self.Cf = extra_parameters.get("Cf", 0.01)
+        self.warmup = extra_parameters.get("warmup", 0.15 * self.tendc)
+        self.deltat = extra_parameters.get("deltat", 1)
+        self.friction = extra_parameters.get("friction", True)
 
     def set_depth(self, depth, dx, dy):
         '''
