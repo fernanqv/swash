@@ -14,4 +14,3 @@ COPY deploy_swash.sh /tmp
 
 # Asegurarse de que el script tenga permisos de ejecución
 RUN bash -x /tmp/deploy_swash.sh
-

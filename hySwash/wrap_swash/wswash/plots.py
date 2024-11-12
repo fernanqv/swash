@@ -115,7 +115,7 @@ class SwashPlot(object):
         axs[0].set_title('$Computational$ $grid$ ${0}$ $nodes/L$'.format(dxL))
         axs[1].set_title('$Interpolated$ $bathymetry$')
 
-    def plot_depthfile(self):
+    def plot_depthfile(self, ax=None):
         'Plot bathymetry data including friction or vegetation area in case active commands'
 
         do_legend = False
@@ -128,7 +128,8 @@ class SwashPlot(object):
 
         x = [i * dx for i in range(len(depth))]  
 
-        fig, ax = plt.subplots(1, figsize = (15, 5))
+        if ax is None:
+            fig, ax = plt.subplots(1, figsize = (15, 5))
 
         ax.fill_between(
             x, - depth[0],  np.zeros((len(depth))),
@@ -238,7 +239,8 @@ class SwashPlot(object):
         if do_legend:
             ax.legend(loc='lower right')
 
-        return fig
+        if ax is None:
+            return fig
 
 
     def animate_case_propagation(self, sp, case_id, tini=0, tend=30, tstep=2, figsize=(15,5)):
