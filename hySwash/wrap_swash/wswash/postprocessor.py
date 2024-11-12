@@ -73,25 +73,28 @@ class Postprocessor(object):
 
         for p_case in p_cases:
             
-            # read output file
-            out = xr.open_dataset(op.join(p_case, 'output.nc'))
-            
-            # remove warmup time from output
-            out = self.remove_warmup_nodata(out)
+            try:
+                # read output file
+                out = xr.open_dataset(op.join(p_case, 'output.nc'))
 
-            self.out = out
+                # remove warmup time from output
+                out = self.remove_warmup_nodata(out)
 
-            # calculate output variables
-            list_ds = []
-            for var, func in var_functions.items():
-                if var in output_vars:
-                    list_ds.append(func())
+                self.out = out
 
-            # concat individual outputs
-            ds_output = xr.merge(list_ds)
-            
-            # store output in netcdf
-            ds_output.to_netcdf(op.join(p_case, 'output_postprocessed.nc'))
+                # calculate output variables
+                list_ds = []
+                for var, func in var_functions.items():
+                    if var in output_vars:
+                        list_ds.append(func())
+
+                # concat individual outputs
+                ds_output = xr.merge(list_ds)
+                
+                # store output in netcdf
+                ds_output.to_netcdf(op.join(p_case, 'output_postprocessed.nc'))
+            except Exception as e:
+                print("Error processing case", p_case, e)
 
     def store_vars_block(self):
         
@@ -103,9 +106,11 @@ class Postprocessor(object):
 
         for p_case in p_cases:
             
-            out = xr.open_dataset(op.join(p_case, 'output_postprocessed.nc'))
-
-            list_ds.append(out)
+            try:
+                out = xr.open_dataset(op.join(p_case, 'output_postprocessed.nc'))
+                list_ds.append(out)
+            except Exception as e:
+                print("Error reading case", p_case, e)
 
         return xr.concat(list_ds, dim='case_id')
 
