@@ -21,8 +21,8 @@ swashrun -input a11stw01
 cd /refrac
 swanrun -input a11refr
 
-echo 'export PATH=/SWASH-10.05-Linux/bin:SWAN-41.51-Linux/bin:$PATH' >> $HOME/.bashrc
-echo 'export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2025.0/lib/:$LD_LIBRARY_PATH' >> $HOME/.bashrc
+echo 'export PATH=/SWASH-10.05-Linux/bin:SWAN-41.51-Linux/bin:$PATH' >> /home/vscode/.bashrc
+echo 'export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2025.0/lib/:$LD_LIBRARY_PATH' >> /home/vscode/.bashrc
 
 #     2  conda install ipykernel
 #     3  conda config --add channels defaults
