@@ -55,13 +55,13 @@ def show_graph_for_different_parameters(pp, sm, df_subset):
         ds_output_all["Hs"].sel(case=0).plot(x="Xp", ax=ax, color="k")
         sm.plot_depthfile(ax=ax)
         ax.plot(
-            np.arange(800, 1000),
-            np.repeat(-2.5, 200),
+            np.arange(int(pp.swash_proj.np_ini), int(pp.swash_proj.np_fin)),
+            np.repeat(-2.5, int(pp.swash_proj.np_fin - pp.swash_proj.np_ini)),
             color="darkgreen",
             linewidth=int(25 * vegetation),
         )
         ax.set_ylim(-7, 4)
-        ax.set_xlim(700, 1160)
+        ax.set_xlim(400, 1160)
         ax.grid(True)
 
         ax.set_title(
@@ -149,13 +149,13 @@ def show_graph_for_all_vegetations(pp, sm, df_subset, hs=2.0, hs_l0=0.02):
 
     sm.plot_depthfile(ax=ax)
     ax.plot(
-        np.arange(800, 1000),
-        np.repeat(-2.5, 200),
+        np.arange(int(pp.swash_proj.np_ini), int(pp.swash_proj.np_fin)),
+        np.repeat(-2.5, int(pp.swash_proj.np_fin - pp.swash_proj.np_ini)),
         color="darkgreen",
         linewidth=10,
     )
     ax.set_ylim(-7, 4)
-    ax.set_xlim(700, 1160)
+    ax.set_xlim(400, 1160)
     ax.grid(True)
 
     ax.set_title(

@@ -154,7 +154,6 @@ class SwashProject(object):
 
         # Set extra parameters
         self.tendc = extra_parameters.get("tendc", 1800)
-        self.Cf = extra_parameters.get("Cf", 0.01)
         self.warmup = extra_parameters.get("warmup", 0.15 * self.tendc)
         self.deltat = extra_parameters.get("deltat", 1)
         self.friction = extra_parameters.get("friction", True)
