@@ -3,13 +3,5 @@ channels:
   - conda-forge
 dependencies:
   - python
-  - matplotlib
-  - numpy
-  - pandas
-  - plotly
-  - scipy
-  - scikit-learn
-  - xarray
-  - netcdf4
-  - ipykernel
-  - ipywidgets
+  - pip:
+      - bluemath_tk
