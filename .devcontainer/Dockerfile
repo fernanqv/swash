@@ -14,3 +14,5 @@ COPY deploy_swash.sh /tmp
 
 # Asegurarse de que el script tenga permisos de ejecución
 RUN bash -x /tmp/deploy_swash.sh
+ENV PATH="/SWASH-10.05-Linux/bin:$PATH"
+ENV LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/2025.0/lib/:$LD_LIBRARY_PATH"
