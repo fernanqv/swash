@@ -14,15 +14,15 @@ tar xzvf testcases.tar.gz
 wget https://swanmodel.sourceforge.io/download/zip/refrac.tar.gz
 tar xzvf refrac.tar.gz
 
-ROOT=`pwd`
-export PATH=$ROOT/SWASH-10.05-Linux/bin:$ROOT/SWAN-41.51-Linux/bin:$PATH
-cd testcases/a11stwav
-swashrun -input a11stw01
-cd /refrac
-swanrun -input a11refr
+#ROOT=`pwd`
+#export PATH=$ROOT/SWASH-10.05-Linux/bin:$ROOT/SWAN-41.51-Linux/bin:$PATH
+#cd testcases/a11stwav
+#swashrun -input a11stw01
+#cd /refrac
+#swanrun -input a11refr
 
-echo 'export PATH=/SWASH-10.05-Linux/bin:SWAN-41.51-Linux/bin:$PATH' >> /home/vscode/.bashrc
-echo 'export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2025.0/lib/:$LD_LIBRARY_PATH' >> /home/vscode/.bashrc
+#echo 'export PATH=/SWASH-10.05-Linux/bin:SWAN-41.51-Linux/bin:$PATH' >> /home/vscode/.bashrc
+#echo 'export LD_LIBRARY_PATH=/opt/intel/oneapi/compiler/2025.0/lib/:$LD_LIBRARY_PATH' >> /home/vscode/.bashrc
 
 #     2  conda install ipykernel
 #     3  conda config --add channels defaults
