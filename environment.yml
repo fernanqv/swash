@@ -4,5 +4,7 @@ channels:
 dependencies:
   - python
   - ipykernel  
+  - panoply
+  - netcdf-java
   - pip:
       - bluemath_tk
