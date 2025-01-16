@@ -3,6 +3,6 @@ channels:
   - conda-forge
 dependencies:
   - python
-  - ipykernel  
+  - ipykernel
   - pip:
-      - bluemath_tk
+      - bluemath-tk
