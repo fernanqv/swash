@@ -1,10 +1,6 @@
 {
   "name": "Swash",
-  "build": {
-    "context": "..",
-    "dockerfile": "Dockerfile"
-  },
-  "postCreateCommand": "pwd",
+  "image": "tausiaj/swash-geoocean:11.01",
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
   },
