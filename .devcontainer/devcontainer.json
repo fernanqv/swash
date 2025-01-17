@@ -5,7 +5,8 @@
     "terminal.integrated.shell.linux": "/bin/bash"
   },
   "extensions": [
-    "ms-python.python"
+    "ms-python.python",
+    "ms-toolsai.jupyter" 
   ],
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/SWASH-11.01-Linux/bin",
