@@ -1,6 +1,6 @@
 {
   "name": "Swash",
-  "image": "tausiaj/swash-geoocean:11.01",
+  "image": "rockylinux:8-minimal",
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
   },
