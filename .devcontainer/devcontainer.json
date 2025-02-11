@@ -6,7 +6,7 @@
   },
   "extensions": [
     "ms-python.python",
-    "ms-toolsai.jupyter" 
+    "ms-toolsai.jupyter"
   ],
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/SWASH-11.01-Linux/bin",
