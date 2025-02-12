@@ -1,12 +1,12 @@
 {
   "name": "Swash",
-  "image": "rockylinux:8-minimal",
+  "image": "tausiaj/swash-geoocean:11.01",
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
   },
   "extensions": [
     "ms-python.python",
-    "ms-toolsai.jupyter"
+    "ms-toolsai.jupyter" 
   ],
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/SWASH-11.01-Linux/bin",
